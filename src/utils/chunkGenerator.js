@@ -16,7 +16,12 @@ export function chunckGenerator() {
     chunckIndicator: [...chunckIndicator, chunckIndicator.length],
   };
 
+  const chunckIndifier = [chunckIndicator.length - 1, chunckIndicator.length];
+
   writeJsonResults(["data", "helpers.json"], newChunckIndicator);
 
-  return chunk;
+  return {
+    chunk,
+    chunckIndifier,
+  };
 }
