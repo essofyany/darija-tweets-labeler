@@ -1,0 +1,32 @@
+{
+  "name": "darija-tweets-labeler",
+  "version": "1.0.0",
+  "description": "this app will be used to label darija tweets",
+  "keywords": [
+    "tweets",
+    "data",
+    "darija",
+    "nextJs",
+    "NLP",
+    "Stemmer",
+    "Sentiments Analysis"
+  ],
+  "author": "Essofyany Bilal",
+  "license": "ISC",
+  "homepage": "https://github.com/essofyany/darija-tweets-labeler#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/essofyany/darija-tweets-labeler.git"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-loader-spinner": "^4.0.0"
+  }
+}
