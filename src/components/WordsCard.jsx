@@ -3,7 +3,6 @@ import Slider, { SliderTooltip } from "rc-slider";
 import "rc-slider/assets/index.css";
 import CloseIcon from "./CloseIcon";
 
-const { createSliderWithTooltip } = Slider;
 const { Handle } = Slider;
 
 const handle = (props) => {
@@ -29,7 +28,7 @@ function WordsCard({ text }) {
   }, []);
 
   function onSliderChange(value) {
-    console.log(value);
+    // setInput(value);
   }
 
   function handleDeleteToken(token) {
