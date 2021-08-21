@@ -1,8 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
+import CloseIcon from "../components/CloseIcon";
+import WordsCard from "../components/WordsCard";
 
 function HomePage() {
-  const [state, setstate] = useState([]);
+  const [state, dispatch] = useReducer(reducer, { toSubmit: false });
+  const [tweets, setTweets] = useState([]);
   const [currentChunk, setCurrentChunk] = useState([]);
+
+  function handleDeleteTweet(id) {
+    const newTweets = tweets.filter((tweet) => tweet._id !== id);
+    setTweets(newTweets);
+  }
 
   async function labelTweet(data) {
     try {
@@ -10,6 +18,7 @@ function HomePage() {
         method: "POST",
         body: JSON.stringify(data),
       });
+      console.log("tweet is labeled successfully");
     } catch (error) {
       throw new Error("something went wrong!!!!!");
     }
@@ -19,8 +28,8 @@ function HomePage() {
     try {
       const res = await fetch("/api/server");
       const { chunk, chunckIndifier } = await res.json();
-      console.log(chunk, chunckIndifier);
-      setstate(chunk);
+      // console.log(chunk, chunckIndifier);
+      setTweets(chunk);
       setCurrentChunk(chunckIndifier);
     } catch (error) {
       throw new Error("something went wrong!!!!!");
@@ -34,54 +43,78 @@ function HomePage() {
 
   return (
     <>
-      <section>
+      <section className="app">
         <h1>Home Page</h1>
         <div className="container">
           <ul className="tweet-list">
-            {state.length > 0 &&
-              state.map((item) => (
-                <li
-                  className="tweet-item"
-                  onClick={() =>
-                    labelTweet({ tweet: item, chunckIndifier: currentChunk })
-                  }
-                  key={item._id}
-                >
-                  <p>{item.text}</p>
+            {tweets.length > 0 &&
+              tweets.map((item) => (
+                <li className="tweet-item" key={item._id}>
+                  <p
+                    className="close-icon"
+                    onClick={() => handleDeleteTweet(item._id)}
+                  >
+                    <CloseIcon />
+                  </p>
+                  {state.toSubmit ? (
+                    <WordsCard text={item.text} />
+                  ) : (
+                    <p className="tweet-text">{item.text}</p>
+                  )}
+                  <div className="btns">
+                    <button
+                      style={{
+                        display: `${state.toSubmit ? "none" : "inline"}`,
+                      }}
+                      onClick={() => dispatch({ type: "toSubmit" })}
+                      className="pos-btn"
+                    >
+                      Positive
+                    </button>
+                    <button
+                      style={{
+                        display: `${state.toSubmit ? "none" : "inline"}`,
+                      }}
+                      onClick={() => dispatch({ type: "toSubmit" })}
+                      className="neu-btn"
+                    >
+                      Neutral
+                    </button>
+                    <button
+                      style={{
+                        display: `${state.toSubmit ? "none" : "inline"}`,
+                      }}
+                      onClick={() => dispatch({ type: "toSubmit" })}
+                      className="neg-btn"
+                    >
+                      Negative
+                    </button>
+                    <button
+                      style={{
+                        display: `${state.toSubmit ? "inline" : "none"}`,
+                      }}
+                      onClick={() => {}}
+                      className="submit-btn"
+                    >
+                      Submit
+                    </button>
+                  </div>
                 </li>
               ))}
           </ul>
         </div>
       </section>
-      <style jsx>
-        {`
-          section {
-            width: 100vw;
-            min-height: 100vh;
-          }
-          .container {
-            max-width: 80%;
-            margin: 0 auto;
-          }
-          .tweet-list {
-            max-width: 80%;
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          }
-          .tweet-item {
-            display: flex;
-            flex-direction: row-reverse;
-            width: 100%;
-            padding: 10px;
-            border-bottom: 1px solid #222;
-          }
-        `}
-      </style>
     </>
   );
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "toSubmit":
+      return { toSubmit: true };
+    default:
+      throw new Error();
+  }
 }
 
 export default HomePage;
