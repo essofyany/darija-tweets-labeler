@@ -4,8 +4,7 @@ import Wrapper from "../components/WrapperCard";
 import { tweetsAtom } from "../context/atoms";
 
 function HomePage() {
-  const [{ chunk: tweets, chunckIndifier }, setTweets] =
-    useRecoilState(tweetsAtom);
+  const [{ chunk: tweets }, setTweets] = useRecoilState(tweetsAtom);
 
   async function fetchTweets() {
     try {
@@ -20,7 +19,6 @@ function HomePage() {
     tweets.length === 0 && fetchTweets();
   }, [tweets]);
 
-  // console.log(tweets.length);
 
   return (
     <>
