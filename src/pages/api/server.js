@@ -2,9 +2,9 @@ import { dbConnect, disconnect } from "../../utils/dbConnect";
 import Tweet from "../../models/tweets";
 import Helper from "../../models/helper";
 import LabeledTweet from "../../models/labeledTweets";
-import PosLexicon from "../../models/PosLexicon";
-import NegLexicon from "../../models/NegLexicon";
-import NeuLexicon from "../../models/NeuLexicon";
+import PosLexicon from "../../models/posLexicon";
+import NegLexicon from "../../models/negLexicon";
+import NeuLexicon from "../../models/neuLexicon";
 
 async function handler(req, res) {
   try {
@@ -58,15 +58,24 @@ async function handler(req, res) {
         neu: Object.assign(neu, data.neu),
       };
 
-      await PosLexicon.findOneAndUpdate({
-        pos: newLexicon.pos,
-      });
-      await NegLexicon.findOneAndUpdate({
-        neg: newLexicon.neg,
-      });
-      await NeuLexicon.findOneAndUpdate({
-        neu: newLexicon.neu,
-      });
+      await PosLexicon.findOneAndUpdate(
+        {
+          pos: newLexicon.pos,
+        },
+        { useFindAndModify: false }
+      );
+      await NegLexicon.findOneAndUpdate(
+        {
+          neg: newLexicon.neg,
+        },
+        { useFindAndModify: false }
+      );
+      await NeuLexicon.findOneAndUpdate(
+        {
+          neu: newLexicon.neu,
+        },
+        { useFindAndModify: false }
+      );
 
       res.status(201).json({ message: "tokes are labeled successfully." });
 
