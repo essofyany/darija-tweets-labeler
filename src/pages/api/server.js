@@ -19,7 +19,8 @@ async function handler(req, res) {
 
     writeJsonResults(
       ["data", "results", "labeledTweets.json"],
-      [tweet, ...labeledTweets.filter((item) => item._id !== tweet._id)]
+      // [tweet,  ...labeledTweets.filter((item) => item._id !== tweet._id)]
+      [tweet, ...labeledTweets]
     );
 
     console.log("post method requested");

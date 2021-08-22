@@ -1,8 +1,11 @@
 import { atom } from "recoil";
 
-export const LabeledTweetAtom = atom({
-  key: "LabeledTweetAtom",
-  default: {},
+export const tweetsAtom = atom({
+  key: "tweetsAtom",
+  default: {
+    chunk: [],
+    chunckIndifier: [],
+  },
 });
 
 export const todoListAtom = atom({

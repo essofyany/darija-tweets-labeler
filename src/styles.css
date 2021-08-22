@@ -6,6 +6,10 @@
   width: 95vw;
   min-height: 100vh;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
 }
 .container {
   max-width: 80%;

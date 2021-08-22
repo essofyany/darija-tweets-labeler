@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
-import { todoListAtom } from "../context/atoms";
-import { removeItemAtIndex, replaceItemAtIndex } from "../utils/arrayCrud";
+import { todoListAtom } from "../../context/atoms";
+import { removeItemAtIndex, replaceItemAtIndex } from "../../utils/arrayCrud";
 
 function TodoItem({ item }) {
   const [todoList, setTodoList] = useRecoilState(todoListAtom);
