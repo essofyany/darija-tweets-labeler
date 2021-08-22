@@ -24,6 +24,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "mongoose": "^5.13.7",
     "next": "latest",
     "rc-slider": "^9.7.2",
     "react": "^17.0.2",

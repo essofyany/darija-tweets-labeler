@@ -7,13 +7,3 @@ export const tweetsAtom = atom({
     chunckIndifier: [],
   },
 });
-
-export const todoListAtom = atom({
-  key: "todoListAtom",
-  default: [],
-});
-
-export const todoListFilterAtom = atom({
-  key: "todoListFilterAtom",
-  default: "Show All",
-});

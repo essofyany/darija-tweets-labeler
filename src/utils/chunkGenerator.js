@@ -25,3 +25,19 @@ export function chunckGenerator() {
     chunckIndifier,
   };
 }
+
+export function tweetsChunck(tweetsArr, chunckIndicator) {
+  const chunk = tweetsArr.slice(
+    (chunckIndicator.length - 1) * 10,
+    chunckIndicator.length * 10
+  );
+
+  const newChunckIndicator = {
+    chunckIndicator: [...chunckIndicator, chunckIndicator.length],
+  };
+
+  return {
+    chunk,
+    chunckIndifier,
+  };
+}
