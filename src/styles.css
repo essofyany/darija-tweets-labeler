@@ -4,11 +4,12 @@
 
 .app {
   width: 95vw;
+  min-height: 95vh;
   min-height: 100vh;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
 }
 .container {

@@ -1,33 +1,19 @@
 import { useState } from "react";
 import Slider, { SliderTooltip } from "rc-slider";
-import "rc-slider/assets/index.css";
 import CloseIcon from "./CloseIcon";
 import { useRecoilState } from "recoil";
 import { tweetsAtom } from "../context/atoms";
 import { removeItemAtIndex } from "../utils/arrayCrud";
+import { labelTokens } from "../utils/api";
 
-const { Handle } = Slider;
-
-const handle = (props) => {
-  const { value, dragging, index, ...restProps } = props;
-  let category = value > 0 ? "Positive" : value < 0 ? "Negative" : "Neutral";
-  return (
-    <SliderTooltip
-      prefixCls="rc-slider-tooltip"
-      overlay={`${value}: ${category}`}
-      visible={dragging}
-      placement="top"
-      key={index}
-    >
-      <Handle value={value} {...restProps} />
-    </SliderTooltip>
-  );
-};
+import "rc-slider/assets/index.css";
 
 function WordsCard({ item }) {
   const [words, setWords] = useState(
     item.text.split(" ").filter((token) => token.length > 2)
   );
+
+  const [lexicon, setLexicon] = useState({ pos: {}, neg: {}, neu: {} });
 
   const [{ chunk: tweets, chunckIndifier }, setTweets] =
     useRecoilState(tweetsAtom);
@@ -39,13 +25,34 @@ function WordsCard({ item }) {
     setTweets({ chunk: newList, chunckIndifier });
   }
 
-  function onSliderChange(value) {
-    // setInput(value);
+  function onSliderChange(value, token) {
+    value > 0
+      ? setLexicon({
+          ...lexicon,
+          pos: Object.assign(lexicon.pos, { [token]: value }),
+        })
+      : value < 0
+      ? setLexicon({
+          ...lexicon,
+          neg: Object.assign(lexicon.neg, { [token]: value }),
+        })
+      : setLexicon({
+          ...lexicon,
+          neu: Object.assign(lexicon.neu, { [token]: value }),
+        });
+
+    // console.log(lexicon);
   }
 
   function handleDeleteToken(token) {
     const newWords = words.filter((word) => word !== token);
     setWords(newWords);
+  }
+
+  function handleSubmit() {
+    labelTokens(lexicon);
+    setLexicon({ pos: {}, neg: {}, neu: {} });
+    handleDeleteTweet();
   }
 
   return (
@@ -59,7 +66,7 @@ function WordsCard({ item }) {
               <div className="card-row-slider">
                 <Slider
                   handle={handle}
-                  onChange={onSliderChange}
+                  onAfterChange={(value) => onSliderChange(value, token)}
                   min={-3}
                   max={3}
                   defaultValue={0}
@@ -85,8 +92,35 @@ function WordsCard({ item }) {
             </div>
           ))
         : handleDeleteTweet()}
+      <button
+        style={{
+          display: `${true ? "inline" : "none"}`,
+        }}
+        onClick={handleSubmit}
+        className="submit-btn"
+      >
+        Submit
+      </button>
     </section>
   );
 }
+
+const { Handle } = Slider;
+
+const handle = (props) => {
+  const { value, dragging, index, ...restProps } = props;
+  let category = value > 0 ? "Positive" : value < 0 ? "Negative" : "Neutral";
+  return (
+    <SliderTooltip
+      prefixCls="rc-slider-tooltip"
+      overlay={`${value}: ${category}`}
+      visible={dragging}
+      placement="top"
+      key={index}
+    >
+      <Handle value={value} {...restProps} />
+    </SliderTooltip>
+  );
+};
 
 export default WordsCard;

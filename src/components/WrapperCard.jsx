@@ -70,15 +70,6 @@ function WrapperCard({ item }) {
         >
           Negative
         </button>
-        <button
-          style={{
-            display: `${clicked ? "inline" : "none"}`,
-          }}
-          onClick={() => {}}
-          className="submit-btn"
-        >
-          Submit
-        </button>
       </div>
     </>
   );

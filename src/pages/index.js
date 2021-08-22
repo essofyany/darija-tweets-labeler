@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import Wrapper from "../components/WrapperCard";
 import { tweetsAtom } from "../context/atoms";
-import { labelTweet } from "../utils/api";
 
 function HomePage() {
   const [{ chunk: tweets, chunckIndifier }, setTweets] =
@@ -18,8 +17,10 @@ function HomePage() {
     }
   }
   useEffect(() => {
-    fetchTweets();
-  }, []);
+    tweets.length === 0 && fetchTweets();
+  }, [tweets]);
+
+  // console.log(tweets.length);
 
   return (
     <>
