@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import Wrapper from "../components/WrapperCard";
@@ -19,11 +20,12 @@ function HomePage() {
     tweets.length === 0 && fetchTweets();
   }, [tweets]);
 
-
   return (
     <>
+      <Head>
+        <title>Tweets Labeler</title>
+      </Head>
       <section className="app">
-        <h1 onClick={() => window.location.assign("/")}>Home Page</h1>
         <div className="container">
           <ul className="tweet-list">
             {tweets.length > 0 &&
