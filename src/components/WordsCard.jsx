@@ -67,8 +67,8 @@ function WordsCard({ item }) {
                 <Slider
                   handle={handle}
                   onAfterChange={(value) => onSliderChange(value, token)}
-                  min={-3}
-                  max={3}
+                  min={-2}
+                  max={2}
                   defaultValue={0}
                   startPoint={0}
                   step={1}
