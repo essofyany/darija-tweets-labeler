@@ -58,31 +58,21 @@ async function handler(req, res) {
         neu: Object.assign(neu, data.neu),
       };
 
-      await PosLexicon.findOneAndUpdate(
-        {
-          pos: newLexicon.pos,
-        },
-        { useFindAndModify: false }
-      );
-      await NegLexicon.findOneAndUpdate(
-        {
-          neg: newLexicon.neg,
-        },
-        { useFindAndModify: false }
-      );
-      await NeuLexicon.findOneAndUpdate(
-        {
-          neu: newLexicon.neu,
-        },
-        { useFindAndModify: false }
-      );
+      await PosLexicon.findOneAndUpdate({
+        pos: newLexicon.pos,
+      });
+      await NegLexicon.findOneAndUpdate({
+        neg: newLexicon.neg,
+      });
+      await NeuLexicon.findOneAndUpdate({
+        neu: newLexicon.neu,
+      });
 
       res.status(201).json({ message: "tokes are labeled successfully." });
 
       disconnect().then(() => console.log("MongoDB is disconnected"));
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: error.message });
   }
 }

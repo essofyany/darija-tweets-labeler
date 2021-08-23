@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
+import WrapperCard from "../components/WrapperCard";
 import Wrapper from "../components/WrapperCard";
 import { tweetsAtom } from "../context/atoms";
 
@@ -31,7 +32,7 @@ function HomePage() {
             {tweets.length > 0 &&
               tweets.map((item) => (
                 <li className="tweet-item" key={item._id}>
-                  <Wrapper item={item} />
+                  <WrapperCard item={item} />
                 </li>
               ))}
           </ul>
