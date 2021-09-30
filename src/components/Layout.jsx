@@ -1,9 +1,14 @@
+/** @format */
+
 import Image from "next/image";
 import GithubIcon from "./GithubIcon";
 import fsr from "../../public/fsr.png";
 import mit from "../../public/mit.png";
+import { useRouter } from "next/router";
 
 function Layout({ children }) {
+  const { route } = useRouter();
+  //console.log(route);
   return (
     <>
       <header>
@@ -16,8 +21,14 @@ function Layout({ children }) {
           />
         </figure>
         <div>
-          <h1 className="title">Tweets Labeler</h1>
-          <p className="title">Tweets labeler for sentiments analysis purpose</p>
+          <h1 className="title">
+            {route.includes("classifier")
+              ? "Sentiments Analysis"
+              : "Tweets Labeler"}
+          </h1>
+          <p className="title">
+            Tweets labeler for sentiments analysis purpose
+          </p>
         </div>
         <figure className="logo-mit">
           <Image

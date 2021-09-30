@@ -1,3 +1,5 @@
+/** @format */
+
 import { dbConnect, disconnect } from "../../utils/dbConnect";
 import Tweet from "../../models/tweets";
 import Helper from "../../models/helper";
@@ -40,15 +42,11 @@ async function handler(req, res) {
 
     if (req.method === "PUT") {
       dbConnect();
-
       let newLexicon = { pos: {}, neg: {}, neu: {} };
-
       const data = JSON.parse(req.body);
-
       const { pos } = await PosLexicon.findOne();
       const { neg } = await NegLexicon.findOne();
       const { neu } = await NeuLexicon.findOne();
-
       newLexicon = {
         ...pos,
         ...neg,
@@ -57,7 +55,6 @@ async function handler(req, res) {
         neg: Object.assign(neg, data.neg),
         neu: Object.assign(neu, data.neu),
       };
-
       await PosLexicon.findOneAndUpdate({
         pos: newLexicon.pos,
       });
