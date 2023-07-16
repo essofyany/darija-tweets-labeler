@@ -1,6 +1,9 @@
 {
   "name": "darija-tweets-labeler",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.14"
+  },
   "description": "this app will be used to label darija tweets",
   "keywords": [
     "tweets",
