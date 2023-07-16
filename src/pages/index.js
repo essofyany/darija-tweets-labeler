@@ -18,7 +18,7 @@ function HomePage() {
     }
   }
   useEffect(() => {
-    tweets.length === 0 && fetchTweets();
+    tweets?.length === 0 && fetchTweets();
   }, [tweets]);
 
   return (
@@ -29,8 +29,8 @@ function HomePage() {
       <section className="app">
         <div className="container">
           <ul className="tweet-list">
-            {tweets.length > 0 &&
-              tweets.map((item) => (
+            {tweets?.length > 0 &&
+              tweets?.map((item) => (
                 <li className="tweet-item" key={item._id}>
                   <WrapperCard item={item} />
                 </li>
