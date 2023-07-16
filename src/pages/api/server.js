@@ -1,77 +1,70 @@
 /** @format */
 
-import { dbConnect, disconnect } from "../../utils/dbConnect";
-import Tweet from "../../models/tweets";
-import Helper from "../../models/helper";
-import LabeledTweet from "../../models/labeledTweets";
-import PosLexicon from "../../models/posLexicon";
-import NegLexicon from "../../models/negLexicon";
-import NeuLexicon from "../../models/neuLexicon";
+import { dbConnect, disconnect } from '../../utils/dbConnect';
+import Tweet from '../../models/tweets';
+import Helper from '../../models/helper';
+import LabeledTweet from '../../models/labeledTweets';
+import PosLexicon from '../../models/posLexicon';
+import NegLexicon from '../../models/negLexicon';
+import NeuLexicon from '../../models/neuLexicon';
 
 async function handler(req, res) {
-  try {
-    if (req.method === "GET") {
-      dbConnect();
+	try {
+		if (req.method === 'GET') {
+			dbConnect();
 
-      const { chunckIndifier } = await Helper.findOne();
+			const chunk = await Tweet.find().limit(1000);
 
-      const chunk = await Tweet.find()
-        .skip(chunckIndifier * 10)
-        .limit(10);
+			disconnect().then(() => console.log('MongoDB is disconnected'));
 
-      await Helper.updateOne({
-        $inc: { chunckIndifier: 1 },
-      });
+			res.status(200).json({ chunk, chunckIndifier: [] });
+		}
 
-      disconnect().then(() => console.log("MongoDB is disconnected"));
+		if (req.method === 'POST') {
+			dbConnect();
 
-      res.status(200).json({ chunk, chunckIndifier: [] });
-    }
+			const { tweet } = JSON.parse(req.body);
 
-    if (req.method === "POST") {
-      dbConnect();
+			await LabeledTweet.create(tweet);
 
-      const { tweet } = JSON.parse(req.body);
+			res.status(201).json({ message: 'tweet is labeled successfully.' });
 
-      await LabeledTweet.create(tweet);
+			disconnect().then(() => console.log('MongoDB is disconnected'));
+		}
 
-      res.status(201).json({ message: "tweet is labeled successfully." });
+		if (req.method === 'PUT') {
+			dbConnect();
+			let newLexicon = { pos: {}, neg: {}, neu: {} };
+			const data = JSON.parse(req.body);
+			// const { pos = {} } = await PosLexicon.findOne();
+			// const { neg = {} } = await NegLexicon.findOne();
+			// const { neu = {} } = await NeuLexicon.findOne();
+			newLexicon = {
+				// ...pos,
+				// ...neg,
+				// ...neu,
+				pos: Object.assign({}, data.pos),
+				neg: Object.assign({}, data.neg),
+				neu: Object.assign({}, data.neu),
+			};
+			await PosLexicon.findOneAndUpdate({
+				pos: newLexicon.pos,
+			});
+			await NegLexicon.findOneAndUpdate({
+				neg: newLexicon.neg,
+			});
+			await NeuLexicon.findOneAndUpdate({
+				neu: newLexicon.neu,
+			});
 
-      disconnect().then(() => console.log("MongoDB is disconnected"));
-    }
+			res.status(201).json({ message: 'tokes are labeled successfully.' });
 
-    if (req.method === "PUT") {
-      dbConnect();
-      let newLexicon = { pos: {}, neg: {}, neu: {} };
-      const data = JSON.parse(req.body);
-      const { pos } = await PosLexicon.findOne();
-      const { neg } = await NegLexicon.findOne();
-      const { neu } = await NeuLexicon.findOne();
-      newLexicon = {
-        ...pos,
-        ...neg,
-        ...neu,
-        pos: Object.assign(pos, data.pos),
-        neg: Object.assign(neg, data.neg),
-        neu: Object.assign(neu, data.neu),
-      };
-      await PosLexicon.findOneAndUpdate({
-        pos: newLexicon.pos,
-      });
-      await NegLexicon.findOneAndUpdate({
-        neg: newLexicon.neg,
-      });
-      await NeuLexicon.findOneAndUpdate({
-        neu: newLexicon.neu,
-      });
-
-      res.status(201).json({ message: "tokes are labeled successfully." });
-
-      disconnect().then(() => console.log("MongoDB is disconnected"));
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+			disconnect().then(() => console.log('MongoDB is disconnected'));
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ error: error.message });
+	}
 }
 
 export default handler;
